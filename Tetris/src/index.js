@@ -1,4 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-render(<div>hello</div>, document.getElementById('root'));
+import App from './App';
+// import { AppHook as App } from './App';
+
+render(<App />, document.getElementById('root'));
