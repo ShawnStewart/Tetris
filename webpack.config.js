@@ -1,14 +1,17 @@
+const dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 const path = require('path');
+const webpack = require('webpack');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
+const { NODE_ENV } = process.env;
+const isProd = NODE_ENV === 'production';
+
+const webpackConfig = {
     entry: './Tetris/src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'index_bundle.js',
-    },
-    devServer: {
-        historyApiFallback: true,
     },
     module: {
         rules: [
@@ -33,9 +36,26 @@ module.exports = {
         ],
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': JSON.stringify(dotenv.parsed),
+        }),
         new HtmlWebpackPlugin({ template: './Tetris/public/index.html' }),
     ],
     resolve: {
         extensions: ['.js'],
     },
+    devServer: {
+        historyApiFallback: true,
+    },
 };
+
+if (!isProd) {
+    webpackConfig.debug = true;
+    webpackConfig.devtool = 'cheap-module-eval-source-map';
+    webpackConfig.output.pathinfo = true;
+} else if (isProd) {
+    webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
+    webpackConfig.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
+}
+
+module.exports = webpackConfig;
