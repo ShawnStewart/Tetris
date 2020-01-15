@@ -8,6 +8,7 @@ const { NODE_ENV } = process.env;
 const isProd = NODE_ENV === 'production';
 
 const webpackConfig = {
+    mode: !isProd ? 'development' : 'production',
     entry: './Tetris/src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -47,10 +48,20 @@ const webpackConfig = {
     devServer: {
         historyApiFallback: true,
     },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendor',
+                    chunks: 'all',
+                },
+            },
+        },
+    },
 };
 
 if (!isProd) {
-    webpackConfig.debug = true;
     webpackConfig.devtool = 'cheap-module-eval-source-map';
     webpackConfig.output.pathinfo = true;
 } else if (isProd) {
