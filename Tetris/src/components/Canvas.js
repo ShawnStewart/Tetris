@@ -29,15 +29,12 @@ const Canvas = ({ id, matrix, height, width }) => {
     const canvasRef = useRef();
 
     useEffect(() => {
-        canvasRef.current = document.getElementById(id);
-    }, []);
-
-    useEffect(() => {
         draw({ canvas: canvasRef.current, m: matrix });
     }, [matrix]);
 
     return (
         <canvas
+            ref={canvasRef}
             id={id}
             className="ssd-canvas"
             height={h * BLOCK_SIZE}
