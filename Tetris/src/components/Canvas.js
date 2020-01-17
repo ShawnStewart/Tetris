@@ -1,10 +1,9 @@
-import React, { memo, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import './canvas.css';
 import { BLOCK_SIZE, COLOR_MAP } from '../constants';
 
-const draw = ({ id, m }) => {
-    const canvas = document.getElementById(id);
+const draw = ({ canvas, m }) => {
     const ctx = canvas.getContext('2d');
 
     ctx.fillStyle = '#000000';
@@ -27,10 +26,15 @@ const Canvas = ({ id, matrix, height, width }) => {
     const h = matrix && matrix.length ? matrix.length : height;
     const w =
         matrix && matrix.length && matrix[0].length ? matrix[0].length : width;
+    const canvasRef = useRef();
 
     useEffect(() => {
-        draw({ id, m: matrix || [[]] });
-    });
+        canvasRef.current = document.getElementById(id);
+    }, []);
+
+    useEffect(() => {
+        draw({ canvas: canvasRef.current, m: matrix });
+    }, [matrix]);
 
     return (
         <canvas
