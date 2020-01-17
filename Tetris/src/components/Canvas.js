@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from 'react';
 
 import './canvas.css';
-import { BLOCK_SIZE } from '../constants';
+import { BLOCK_SIZE, COLOR_MAP } from '../constants';
 
 const draw = ({ id, m }) => {
     const canvas = document.getElementById(id);
@@ -12,7 +12,7 @@ const draw = ({ id, m }) => {
 
     for (let i = 0; i < m.length; i++) {
         for (let j = 0; j < m[0].length; j++) {
-            ctx.fillStyle = m[i][j] > 0 ? '#5fa4df' : '#c7c7c7';
+            ctx.fillStyle = COLOR_MAP[m[i][j]];
             ctx.fillRect(
                 j * BLOCK_SIZE + 1,
                 i * BLOCK_SIZE + 1,
