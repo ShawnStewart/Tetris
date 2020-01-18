@@ -4,11 +4,12 @@ export const BLOCK_SIZE = 30;
 
 export const COLOR_MAP = {
     0: '#ffffff00',
-    1: '#60d9f4',
-    2: '#4051d3',
-    3: '#e8b23f',
-    4: '#f7f75c',
-    5: '#35ac51',
-    6: '#fc44ff',
-    7: '#ff4444',
+    1: '#f0f0f0',
+    2: '#60d9f4',
+    3: '#4051d3',
+    4: '#e8b23f',
+    5: '#f7f75c',
+    6: '#35ac51',
+    7: '#fc44ff',
+    8: '#ff4444',
 };
