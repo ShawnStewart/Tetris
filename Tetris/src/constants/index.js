@@ -3,7 +3,7 @@ export { TETROMINO_MAP, TETROMINOS } from './tetrominos';
 export const BLOCK_SIZE = 30;
 
 export const COLOR_MAP = {
-    0: '#d8d8d8',
+    0: '#ffffff00',
     1: '#60d9f4',
     2: '#4051d3',
     3: '#e8b23f',
