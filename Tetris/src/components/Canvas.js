@@ -15,7 +15,7 @@ const Canvas = ({ id, matrix, height, width, forwardRef }) => {
         const canvas = canvasRef.current;
 
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-        drawToCanvas({ canvas: canvasRef.current, matrix });
+        drawToCanvas({ canvas, matrix });
     }, [matrix]);
 
     return (

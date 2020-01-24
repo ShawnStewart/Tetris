@@ -5,6 +5,10 @@
 
 .section {
     padding: 100px 0;
+
+    &--sm {
+        padding: 10px 0;
+    }
 }
 
 .align-center {
