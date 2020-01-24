@@ -24,14 +24,20 @@ const TetrominosShowcase = () => {
     useInterval(() => setMatrices(rotateAllMatrices()), 2000);
 
     const tetrominos = Object.keys(matrices).map((key, i) => (
-        <div className="section--sm align-center flex-column">
+        <div className="section--xsm align-center flex-column">
             <span>{`Key: ${key} Index: ${i}`}</span>
-            <Canvas id={`tetromino-${key}`} key={key} matrix={matrices[key]} />
+            <Canvas
+                id={`tetromino-${key}`}
+                key={key}
+                matrix={matrices[key]}
+                height={matrices[key].length}
+                width={matrices[key].length}
+            />
         </div>
     ));
 
     return (
-        <div id="tetrominos-showcase" className="section">
+        <div id="tetrominos-showcase" className="section--sm">
             <div className="container align-center flex-column">
                 {tetrominos}
             </div>

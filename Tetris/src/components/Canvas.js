@@ -5,10 +5,7 @@ import { drawToCanvas } from '../utils';
 
 import './canvas.scss';
 
-const Canvas = ({ id, matrix, height, width, forwardRef }) => {
-    const h = matrix && matrix.length ? matrix.length : height;
-    const w =
-        matrix && matrix.length && matrix[0].length ? matrix[0].length : width;
+const Canvas = ({ id, matrix, height: h, width: w, forwardRef }) => {
     const canvasRef = forwardRef || useRef();
 
     useEffect(() => {
