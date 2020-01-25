@@ -2,6 +2,9 @@ export { TETROMINO_MAP, TETROMINOS } from './tetrominos';
 
 export const BLOCK_SIZE = 30;
 
+export const BOARD_HEIGHT = 20;
+export const BOARD_WIDTH = 10;
+
 export const COLOR_MAP = {
     0: '#ffffff00',
     1: '#f0f0f0',

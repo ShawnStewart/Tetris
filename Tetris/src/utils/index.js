@@ -1,4 +1,11 @@
-import { BLOCK_SIZE, COLOR_MAP } from '../constants';
+import { BLOCK_SIZE, BOARD_HEIGHT, BOARD_WIDTH, COLOR_MAP } from '../constants';
+import { TETROMINOS, TETROMINO_MAP } from '../constants/tetrominos';
+
+export const clearCanvas = ({ canvas }) => {
+    const ctx = canvas.getContext('2d');
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+};
 
 export const drawToCanvas = ({ canvas, matrix: m, x = 0, y = 0 }) => {
     const ctx = canvas.getContext('2d');
@@ -28,6 +35,17 @@ export const drawToCanvas = ({ canvas, matrix: m, x = 0, y = 0 }) => {
         }
     }
 };
+
+export const getTetromino = (index) => {
+    if (!index || index > TETROMINOS.length) {
+        index = Math.floor(Math.random() * TETROMINOS.length);
+    }
+
+    return TETROMINO_MAP[TETROMINOS[index]];
+};
+
+export const initializeBoard = () =>
+    new Array(BOARD_HEIGHT).fill(new Array(BOARD_WIDTH).fill(1));
 
 export const rotateMatrix = ({ clockwise = true, matrix: m }) => {
     const n = m.length;
