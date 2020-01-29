@@ -48,13 +48,13 @@ export const initializeBoard = () =>
     new Array(BOARD_HEIGHT).fill(new Array(BOARD_WIDTH).fill(1));
 
 export const rotateMatrix = ({ clockwise = true, matrix: m }) => {
-    const n = m.length;
+    const result = m.map((r) => [...r]);
 
-    for (let i = 0; i < n; i++) {
-        for (let j = i + 1; j < n; j++) {
-            [m[i][j], m[j][i]] = [m[j][i], m[i][j]];
+    for (let i = 0; i < result.length; i++) {
+        for (let j = i + 1; j < result.length; j++) {
+            [result[i][j], result[j][i]] = [result[j][i], result[i][j]];
         }
     }
 
-    return clockwise ? m.map((r) => r.reverse()) : m.reverse();
+    return clockwise ? result.map((r) => r.reverse()) : result.reverse();
 };
