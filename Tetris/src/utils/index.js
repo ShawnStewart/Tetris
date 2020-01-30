@@ -44,8 +44,15 @@ export const getTetromino = (index) => {
     return TETROMINO_MAP[TETROMINOS[index]];
 };
 
-export const initializeBoard = () =>
-    new Array(BOARD_HEIGHT).fill(new Array(BOARD_WIDTH).fill(1));
+export const initializeBoard = () => {
+    const board = new Array(BOARD_HEIGHT);
+
+    for (let i = 0; i < BOARD_HEIGHT; i++) {
+        board[i] = new Array(BOARD_WIDTH).fill(1);
+    }
+
+    return board;
+};
 
 export const rotateMatrix = ({ clockwise = true, matrix: m }) => {
     const result = m.map((r) => [...r]);
