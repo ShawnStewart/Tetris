@@ -13,6 +13,6 @@ export const COLOR_MAP = {
     4: '#e8b23f',
     5: '#f7f75c',
     6: '#35ac51',
-    7: '#fc44ff',
+    7: '#ee61a3',
     8: '#ff4444',
 };
