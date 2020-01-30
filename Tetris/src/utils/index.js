@@ -49,7 +49,7 @@ export const drawToCanvas = ({ canvas, matrix: m, x = 0, y = 0 }) => {
 };
 
 export const getTetromino = (index) => {
-    if (!index || index > TETROMINOS.length) {
+    if (isNaN(index) || index < 0 || index > TETROMINOS.length) {
         index = Math.floor(Math.random() * TETROMINOS.length);
     }
 
