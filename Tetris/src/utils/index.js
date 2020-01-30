@@ -7,6 +7,18 @@ export const clearCanvas = ({ canvas }) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 };
 
+export const checkForCollision = ({ gameBoard, shape, x, y }) => {
+    return shape.some((row, i) =>
+        row.some((column, j) => {
+            if (j + x < 0 || j + x >= BOARD_WIDTH || i + y >= BOARD_HEIGHT) {
+                return !!column;
+            }
+
+            return !!column && gameBoard[i + y][j + x] > 1;
+        }),
+    );
+};
+
 export const drawToCanvas = ({ canvas, matrix: m, x = 0, y = 0 }) => {
     const ctx = canvas.getContext('2d');
 
