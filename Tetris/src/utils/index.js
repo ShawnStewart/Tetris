@@ -54,7 +54,7 @@ export const initializeBoard = () => {
     return board;
 };
 
-export const rotateMatrix = ({ clockwise = true, matrix: m }) => {
+export const rotateMatrix = ({ anticlockwise: anti = false, matrix: m }) => {
     const result = m.map((r) => [...r]);
 
     for (let i = 0; i < result.length; i++) {
@@ -63,5 +63,5 @@ export const rotateMatrix = ({ clockwise = true, matrix: m }) => {
         }
     }
 
-    return clockwise ? result.map((r) => r.reverse()) : result.reverse();
+    return anti ? result.reverse() : result.map((r) => r.reverse());
 };
