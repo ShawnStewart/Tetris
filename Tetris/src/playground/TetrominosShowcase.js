@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-
-import { useInterval } from '../custom-hooks';
+import React, { useEffect, useState } from 'react';
 
 import Canvas from '../components/Canvas';
 import { TETROMINOS, TETROMINO_MAP } from '../constants';
 import { rotateMatrix } from '../utils';
 
-const TetrominosShowcase = () => {
-    const defaultMatrices = TETROMINOS.reduce(
+const getInitialMatrices = () =>
+    TETROMINOS.reduce(
         (acc, cur) => ({ ...acc, [cur]: TETROMINO_MAP[cur].getShape() }),
         {},
     );
-    const [matrices, setMatrices] = useState(defaultMatrices);
-    const rotateAllMatrices = () =>
-        Object.keys(matrices).reduce(
+
+const TetrominosShowcase = () => {
+    const [matrices, setMatrices] = useState(getInitialMatrices);
+
+    const rotateAllMatrices = () => {
+        const update = Object.keys(matrices).reduce(
             (acc, key) => ({
                 ...acc,
                 [key]: rotateMatrix({ matrix: matrices[key] }),
@@ -21,7 +22,18 @@ const TetrominosShowcase = () => {
             {},
         );
 
-    useInterval(() => setMatrices(rotateAllMatrices()), 2000);
+        setMatrices(update);
+    };
+
+    useEffect(() => {
+        const interval = setInterval(rotateAllMatrices, 2000);
+
+        const cleanUp = () => {
+            clearInterval(interval);
+        };
+
+        return cleanUp;
+    }, [matrices]);
 
     const tetrominos = Object.keys(matrices).map((key, i) => (
         <div key={key} className="section--xsm align-center flex-column">
