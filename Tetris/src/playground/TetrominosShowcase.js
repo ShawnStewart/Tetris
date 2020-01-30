@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+
+import { useInterval } from '../custom-hooks';
 
 import Canvas from '../components/Canvas';
 import { TETROMINOS, TETROMINO_MAP } from '../constants';
@@ -25,15 +27,7 @@ const TetrominosShowcase = () => {
         setMatrices(update);
     };
 
-    useEffect(() => {
-        const interval = setInterval(rotateAllMatrices, 2000);
-
-        const cleanUp = () => {
-            clearInterval(interval);
-        };
-
-        return cleanUp;
-    }, [matrices]);
+    useInterval(rotateAllMatrices, 2000, [matrices]);
 
     const tetrominos = Object.keys(matrices).map((key, i) => (
         <div key={key} className="section--xsm align-center flex-column">
