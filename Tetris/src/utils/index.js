@@ -4,6 +4,8 @@ import { TETROMINOS, TETROMINO_MAP } from '../constants/tetrominos';
 const _checkOutOfBounds = ({ i, j, x, y }) =>
     j + x < 0 || j + x >= BOARD_WIDTH || i + y >= BOARD_HEIGHT;
 
+const _checkRowCompleted = (row) => !row.some((v) => v === 1);
+
 export const clearCanvas = ({ canvas }) => {
     const ctx = canvas.getContext('2d');
 
@@ -90,6 +92,16 @@ export const updateGameBoard = ({ gameBoard, shape, x, y }) => {
                 result[i + y][j + x] = column;
             }
         });
+    });
+
+    shape.forEach((row, i) => {
+        if (
+            !_checkOutOfBounds({ i, j: 0, x: 0, y }) &&
+            _checkRowCompleted(result[i + y])
+        ) {
+            result.splice(i + y, 1);
+            result.unshift(new Array(BOARD_WIDTH).fill(1));
+        }
     });
 
     return result;
