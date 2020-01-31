@@ -78,16 +78,26 @@ const Tetris = () => {
 
     const _rotatePlayer = () => {
         const rotated = rotateMatrix({ matrix: player.shape });
+        let posX = player.x;
+
+        if (posX < 0) {
+            posX = 0;
+        } else if (posX > BOARD_WIDTH - player.shape.length) {
+            posX = BOARD_WIDTH - player.shape.length;
+        }
+
         const collision = checkForCollision({
             gameBoard,
             ...player,
             shape: rotated,
+            x: posX,
         });
 
         if (!collision) {
             setPlayer({
                 ...player,
                 shape: rotated,
+                x: posX,
             });
         }
     };
