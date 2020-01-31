@@ -9,6 +9,7 @@ import {
     getTetromino,
     initializeBoard,
     rotateMatrix,
+    checkForCollision,
 } from '../utils';
 
 import './Tetris.scss';
@@ -30,7 +31,7 @@ const Tetris = () => {
 
     useEffect(() => {
         selfRef.current.focus();
-    }, [selfRef]);
+    }, []);
 
     useEffect(() => {
         _drawBoard();
@@ -42,70 +43,53 @@ const Tetris = () => {
 
         clearCanvas({ canvas });
         drawToCanvas({ canvas, matrix: gameBoard });
-        drawToCanvas({ canvas, matrix: shape, x: x, y: y });
+        drawToCanvas({ canvas, matrix: shape, x, y });
     };
 
     const _movePlayerLeft = () => {
-        if (
-            player.x <= 0 &&
-            player.shape.some((row) => row[Math.abs(player.x)])
-        ) {
-            return;
-        }
-
-        setPlayer({
+        const collision = checkForCollision({
+            gameBoard,
             ...player,
             x: player.x - 1,
         });
+
+        if (!collision) {
+            setPlayer({
+                ...player,
+                x: player.x - 1,
+            });
+        }
     };
 
     const _movePlayerRight = () => {
-        const overhang = player.x - (BOARD_WIDTH - player.shape[0].length);
-
-        if (
-            overhang >= 0 &&
-            player.shape.some((row) => row[row.length - 1 - overhang])
-        ) {
-            return;
-        }
-
-        setPlayer({
+        const collision = checkForCollision({
+            gameBoard,
             ...player,
             x: player.x + 1,
         });
+
+        if (!collision) {
+            setPlayer({
+                ...player,
+                x: player.x + 1,
+            });
+        }
     };
 
     const _rotatePlayer = () => {
-        const rotatedMatrix = rotateMatrix({ matrix: player.shape });
-        let posX = player.x;
-        let overhang;
-
-        do {
-            overhang =
-                posX < 0
-                    ? Math.abs(posX)
-                    : posX - BOARD_WIDTH + player.shape[0].length;
-
-            const isClipping =
-                overhang > 0 &&
-                player.shape.some((row) => {
-                    if (posX < 0) {
-                        return row[overhang - 1];
-                    }
-
-                    return row[row.length - overhang];
-                });
-
-            if (isClipping) {
-                posX = posX < 0 ? ++posX : --posX;
-            }
-        } while (overhang > 0);
-
-        setPlayer({
+        const rotated = rotateMatrix({ matrix: player.shape });
+        const collision = checkForCollision({
+            gameBoard,
             ...player,
-            shape: rotatedMatrix,
-            x: posX,
+            shape: rotated,
         });
+
+        if (!collision) {
+            setPlayer({
+                ...player,
+                shape: rotated,
+            });
+        }
     };
 
     const _handleOnKeyDown = (e) => {
