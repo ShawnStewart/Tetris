@@ -1,6 +1,9 @@
 import { BLOCK_SIZE, BOARD_HEIGHT, BOARD_WIDTH, COLOR_MAP } from '../constants';
 import { TETROMINOS, TETROMINO_MAP } from '../constants/tetrominos';
 
+const _checkOutOfBounds = ({ i, j, x, y }) =>
+    j + x < 0 || j + x >= BOARD_WIDTH || i + y >= BOARD_HEIGHT;
+
 export const clearCanvas = ({ canvas }) => {
     const ctx = canvas.getContext('2d');
 
@@ -10,7 +13,7 @@ export const clearCanvas = ({ canvas }) => {
 export const checkForCollision = ({ gameBoard, shape, x, y }) => {
     return shape.some((row, i) =>
         row.some((column, j) => {
-            if (j + x < 0 || j + x >= BOARD_WIDTH || i + y >= BOARD_HEIGHT) {
+            if (_checkOutOfBounds({ i, j, x, y })) {
                 return !!column;
             }
 
@@ -76,4 +79,18 @@ export const rotateMatrix = ({ anticlockwise: anti = false, matrix: m }) => {
     }
 
     return anti ? result.reverse() : result.map((r) => r.reverse());
+};
+
+export const updateGameBoard = ({ gameBoard, shape, x, y }) => {
+    const result = gameBoard.map((r) => [...r]);
+
+    shape.forEach((row, i) => {
+        row.forEach((column, j) => {
+            if (!_checkOutOfBounds({ i, j, x, y }) && !!column) {
+                result[i + y][j + x] = column;
+            }
+        });
+    });
+
+    return result;
 };
