@@ -10,6 +10,7 @@ import {
     initializeBoard,
     rotateMatrix,
     checkForCollision,
+    updateGameBoard,
 } from '../utils';
 
 import './Tetris.scss';
@@ -76,7 +77,32 @@ const Tetris = () => {
         }
     };
 
-    const _movePlayerDown = () => {};
+    const _movePlayerDown = () => {
+        const collision = checkForCollision({
+            gameBoard,
+            ...player,
+            y: player.y + 1,
+        });
+
+        if (!collision) {
+            setPlayer({
+                ...player,
+                y: player.y + 1,
+            });
+        } else {
+            const newGameBoard = updateGameBoard({ gameBoard, ...player });
+            setGameBoard(newGameBoard);
+
+            const newTetromino = getTetromino();
+            const { key, getShape } = newTetromino;
+            setPlayer({
+                key,
+                shape: getShape(),
+                x: 4,
+                y: 0,
+            });
+        }
+    };
 
     const _rotatePlayer = () => {
         const rotated = rotateMatrix({ matrix: player.shape });
