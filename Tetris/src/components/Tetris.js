@@ -76,6 +76,8 @@ const Tetris = () => {
         }
     };
 
+    const _movePlayerDown = () => {};
+
     const _rotatePlayer = () => {
         const rotated = rotateMatrix({ matrix: player.shape });
         let posX = player.x;
@@ -103,20 +105,35 @@ const Tetris = () => {
     };
 
     const _handleOnKeyDown = (e) => {
-        if (e.keyCode >= 37 && e.keyCode <= 40) {
-            e.preventDefault();
+        const { keyCode, metaKey } = e;
 
-            switch (e.keyCode) {
-                case 37:
-                    _movePlayerLeft();
-                    break;
-                case 38:
-                    _rotatePlayer();
-                    break;
-                case 39:
-                    _movePlayerRight();
-                    break;
-            }
+        if (!metaKey) {
+            e.preventDefault();
+            e.persist();
+        }
+
+        switch (keyCode) {
+            case 32:
+                console.log('player', player);
+                break;
+            case 37:
+                _movePlayerLeft();
+                break;
+            case 38:
+                _rotatePlayer();
+                break;
+            case 39:
+                _movePlayerRight();
+                break;
+            case 40:
+                _movePlayerDown();
+                break;
+            case 82:
+                setPlayer({ ...player, x: 4, y: 0 });
+                break;
+            default:
+                console.log('unknown key pressed', keyCode);
+                break;
         }
     };
 
