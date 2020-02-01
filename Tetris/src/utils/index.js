@@ -13,15 +13,19 @@ export const clearCanvas = ({ canvas }) => {
 };
 
 export const checkForCollision = ({ gameBoard, shape, x, y }) => {
-    return shape.some((row, i) =>
-        row.some((column, j) => {
+    return shape.some((row, i) => {
+        if (i + y < 0) {
+            return false;
+        }
+
+        return row.some((column, j) => {
             if (_checkOutOfBounds({ i, j, x, y })) {
                 return !!column;
             }
 
             return !!column && gameBoard[i + y][j + x] > 1;
-        }),
-    );
+        });
+    });
 };
 
 export const drawToCanvas = ({ canvas, matrix: m, x = 0, y = 0 }) => {
