@@ -16,12 +16,12 @@ import {
 import './Tetris.scss';
 
 const Tetris = () => {
-    const { key, shape } = getTetromino();
+    const { key, shape, x } = getTetromino();
 
     const selfRef = useRef();
     const gameBoardRef = useRef();
     const [gameBoard, setGameBoard] = useState(initializeBoard());
-    const [player, setPlayer] = useState({ key, shape, x: 0, y: 0 });
+    const [player, setPlayer] = useState({ key, shape, x, y: 0 });
 
     useEffect(() => {
         selfRef.current.focus();
@@ -86,9 +86,9 @@ const Tetris = () => {
             const newGameBoard = updateGameBoard({ gameBoard, ...player });
             setGameBoard(newGameBoard);
 
-            const { key, shape } = getTetromino();
+            const { key, shape, x } = getTetromino();
 
-            setPlayer({ key, shape, x: 0, y: 0 });
+            setPlayer({ key, shape, x, y: 0 });
         }
     };
 

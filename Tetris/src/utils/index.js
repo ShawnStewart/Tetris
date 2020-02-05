@@ -63,8 +63,10 @@ export const getTetromino = (index) => {
     }
 
     const { getShape, key } = TETROMINO_MAP[TETROMINOS[index]];
+    const shape = getShape();
+    const x = BOARD_WIDTH / 2 - Math.ceil(shape.length / 2);
 
-    return { key, shape: getShape() };
+    return { key, shape, x };
 };
 
 export const initializeBoard = () => {
