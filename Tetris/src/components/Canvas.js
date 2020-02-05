@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 
 import { BLOCK_SIZE } from '../constants';
 import { drawToCanvas } from '../utils';
@@ -26,4 +26,4 @@ const Canvas = ({ id, matrix, height: h, width: w, forwardRef }) => {
     );
 };
 
-export default Canvas;
+export default memo(Canvas);
