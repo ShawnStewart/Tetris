@@ -4,31 +4,24 @@ import Canvas from './Canvas';
 
 import { BOARD_HEIGHT, BOARD_WIDTH } from '../constants';
 import {
+    checkForCollision,
     clearCanvas,
     drawToCanvas,
     getTetromino,
     initializeBoard,
     rotateMatrix,
-    checkForCollision,
     updateGameBoard,
 } from '../utils';
 
 import './Tetris.scss';
 
 const Tetris = () => {
-    const initialTetromino = getTetromino();
-    const { key, getShape } = initialTetromino;
-    const initialShape = getShape();
+    const { key, shape } = getTetromino();
 
     const selfRef = useRef();
     const gameBoardRef = useRef();
     const [gameBoard, setGameBoard] = useState(initializeBoard());
-    const [player, setPlayer] = useState({
-        key,
-        shape: initialShape,
-        x: 4,
-        y: 2,
-    });
+    const [player, setPlayer] = useState({ key, shape, x: 0, y: 0 });
 
     useEffect(() => {
         selfRef.current.focus();
@@ -93,14 +86,9 @@ const Tetris = () => {
             const newGameBoard = updateGameBoard({ gameBoard, ...player });
             setGameBoard(newGameBoard);
 
-            const newTetromino = getTetromino();
-            const { key, getShape } = newTetromino;
-            setPlayer({
-                key,
-                shape: getShape(),
-                x: 4,
-                y: 0,
-            });
+            const { key, shape } = getTetromino();
+
+            setPlayer({ key, shape, x: 0, y: 0 });
         }
     };
 
@@ -155,7 +143,7 @@ const Tetris = () => {
                 _movePlayerDown();
                 break;
             case 82:
-                setPlayer({ ...player, x: 4, y: 0 });
+                setPlayer({ ...player, x: 0, y: 0 });
                 break;
             default:
                 console.log('unknown key pressed', keyCode);
