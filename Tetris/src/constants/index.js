@@ -16,3 +16,5 @@ export const COLOR_MAP = {
     7: '#ee61a3',
     8: '#ff4444',
 };
+
+export const QUEUE_LENGTH = 4;

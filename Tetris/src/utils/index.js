@@ -1,4 +1,10 @@
-import { BLOCK_SIZE, BOARD_HEIGHT, BOARD_WIDTH, COLOR_MAP } from '../constants';
+import {
+    BLOCK_SIZE,
+    BOARD_HEIGHT,
+    BOARD_WIDTH,
+    COLOR_MAP,
+    QUEUE_LENGTH,
+} from '../constants';
 import { TETROMINOS, TETROMINO_MAP } from '../constants/tetrominos';
 
 const _checkOutOfBounds = ({ i, j, x, y }) =>
@@ -77,6 +83,16 @@ export const initializeBoard = () => {
     }
 
     return board;
+};
+
+export const initializeQueue = () => {
+    const queue = [];
+
+    for (let i = 1; i < QUEUE_LENGTH + 1; i++) {
+        queue.push({ ...getTetromino(), tetrominoId: i });
+    }
+
+    return queue;
 };
 
 export const rotateMatrix = ({ anticlockwise: anti = false, matrix: m }) => {

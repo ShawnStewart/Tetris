@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import Canvas from './Canvas';
+import Queue from './Queue';
 
 import { BOARD_HEIGHT, BOARD_WIDTH } from '../constants';
 import {
@@ -9,6 +10,7 @@ import {
     drawToCanvas,
     getTetromino,
     initializeBoard,
+    initializeQueue,
     rotateMatrix,
     updateGameBoard,
 } from '../utils';
@@ -21,7 +23,9 @@ const Tetris = () => {
     const selfRef = useRef();
     const gameBoardRef = useRef();
     const [gameBoard, setGameBoard] = useState(initializeBoard());
+    const [queue, setQueue] = useState(initializeQueue());
     const [player, setPlayer] = useState({ key, shape, x, y: 0 });
+    const [tetrominoCount, setTetrominoCount] = useState(5);
 
     useEffect(() => {
         selfRef.current.focus();
@@ -38,6 +42,14 @@ const Tetris = () => {
         clearCanvas({ canvas });
         drawToCanvas({ canvas, matrix: gameBoard });
         drawToCanvas({ canvas, matrix: shape, x, y });
+    };
+
+    const _getTetrominoFromQueue = () => {
+        const addToQueue = { ...getTetromino(), tetrominoId: tetrominoCount };
+
+        setPlayer({ ...queue[0], y: 0 });
+        setQueue([...queue.slice(1), addToQueue]);
+        setTetrominoCount(tetrominoCount + 1);
     };
 
     const _movePlayerLeft = () => {
@@ -84,11 +96,9 @@ const Tetris = () => {
             });
         } else {
             const newGameBoard = updateGameBoard({ gameBoard, ...player });
+
             setGameBoard(newGameBoard);
-
-            const { key, shape, x } = getTetromino();
-
-            setPlayer({ key, shape, x, y: 0 });
+            _getTetrominoFromQueue();
         }
     };
 
@@ -167,6 +177,7 @@ const Tetris = () => {
                     height={BOARD_HEIGHT}
                     width={BOARD_WIDTH}
                 />
+                <Queue matrices={queue} />
             </div>
         </div>
     );
