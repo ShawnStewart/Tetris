@@ -71,8 +71,17 @@ export const getTetromino = (index) => {
     const { getShape, key } = TETROMINO_MAP[TETROMINOS[index]];
     const shape = getShape();
     const x = BOARD_WIDTH / 2 - Math.ceil(shape.length / 2);
+    let y = 0 - shape.length;
 
-    return { key, shape, x };
+    for (let i = shape.length - 1; i >= 0; i--) {
+        if (shape[i].some((c) => c > 0)) {
+            break;
+        }
+
+        y++;
+    }
+
+    return { key, shape, x, y };
 };
 
 export const initializeBoard = () => {
