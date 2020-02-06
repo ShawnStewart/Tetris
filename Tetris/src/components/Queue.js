@@ -3,10 +3,10 @@ import React, { memo } from 'react';
 import Canvas from './Canvas';
 
 const Queue = ({ matrices }) => {
-    const queue = matrices.map(({ key, shape, tetrominoId }, i) => (
+    const queue = matrices.map(({ key, shape, tetrominoId }) => (
         <Canvas
-            id={tetrominoId}
-            key={tetrominoId}
+            id={`${key}-${tetrominoId}`}
+            key={`${key}-${tetrominoId}`}
             matrix={shape}
             height={shape.length}
             width={shape.length}
