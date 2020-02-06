@@ -18,13 +18,11 @@ import {
 import './Tetris.scss';
 
 const Tetris = () => {
-    const { key, shape, x } = getTetromino();
-
     const selfRef = useRef();
     const gameBoardRef = useRef();
-    const [gameBoard, setGameBoard] = useState(initializeBoard());
-    const [queue, setQueue] = useState(initializeQueue());
-    const [player, setPlayer] = useState({ key, shape, x, y: 0 });
+    const [gameBoard, setGameBoard] = useState(initializeBoard);
+    const [queue, setQueue] = useState(initializeQueue);
+    const [player, setPlayer] = useState(() => ({ ...getTetromino() }));
     const [tetrominoCount, setTetrominoCount] = useState(5);
 
     useEffect(() => {
