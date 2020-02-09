@@ -45,7 +45,7 @@ const Tetris = () => {
     const _getTetrominoFromQueue = () => {
         const addToQueue = { ...getTetromino(), tetrominoId: tetrominoCount };
 
-        setPlayer({ ...queue[0], y: 0 });
+        setPlayer({ ...queue[0] });
         setQueue([...queue.slice(1), addToQueue]);
         setTetrominoCount(tetrominoCount + 1);
     };
