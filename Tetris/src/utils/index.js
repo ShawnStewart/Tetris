@@ -63,6 +63,13 @@ export const drawToCanvas = ({ canvas, matrix: m, x = 0, y = 0 }) => {
     }
 };
 
+export const getInitialState = () => ({
+    gameBoard: initializeBoard(),
+    player: getTetromino(),
+    tetrominoCount: QUEUE_LENGTH + 1,
+    queue: initializeQueue(),
+});
+
 export const getTetromino = (index) => {
     if (isNaN(index) || index < 0 || index > TETROMINOS.length) {
         index = Math.floor(Math.random() * TETROMINOS.length);
