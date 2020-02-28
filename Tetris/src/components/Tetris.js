@@ -35,10 +35,6 @@ const Tetris = () => {
     }, []);
 
     useEffect(() => {
-        _drawBoard();
-    }, [state.player]);
-
-    const _drawBoard = () => {
         const canvas = gameBoardRef.current;
         const {
             gameBoard,
@@ -48,15 +44,7 @@ const Tetris = () => {
         clearCanvas({ canvas });
         drawToCanvas({ canvas, matrix: gameBoard });
         drawToCanvas({ canvas, matrix: shape, x, y });
-    };
-
-    const _getTetrominoFromQueue = () => {
-        const addToQueue = { ...getTetromino(), tetrominoId: tetrominoCount };
-
-        setPlayer({ ...queue[0] });
-        setQueue([...queue.slice(1), addToQueue]);
-        setTetrominoCount(tetrominoCount + 1);
-    };
+    }, [state.player]);
 
     const _movePlayerLeft = () => {
         const { gameBoard, player } = state;
