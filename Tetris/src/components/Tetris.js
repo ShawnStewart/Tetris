@@ -24,7 +24,6 @@ import {
 import './Tetris.scss';
 
 const Tetris = () => {
-    console.log('here', process.env);
     const selfRef = useRef();
     const gameBoardRef = useRef();
     const [state, dispatch] = useReducer(reducer, getInitialState());
