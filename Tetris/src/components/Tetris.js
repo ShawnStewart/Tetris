@@ -18,7 +18,6 @@ import {
     clearCanvas,
     drawToCanvas,
     getInitialState,
-    getTetromino,
     rotateMatrix,
 } from '../utils';
 
