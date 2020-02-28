@@ -8,6 +8,7 @@ import {
     MOVE_PLAYER_LEFT,
     MOVE_PLAYER_RIGHT,
     PLAYER_BLOCKED,
+    RESET_PLAYER,
     ROTATE_PLAYER,
 } from '../actions';
 import { BOARD_HEIGHT, BOARD_WIDTH } from '../constants';
@@ -24,6 +25,7 @@ import {
 import './Tetris.scss';
 
 const Tetris = () => {
+    console.log('here', process.env);
     const selfRef = useRef();
     const gameBoardRef = useRef();
     const [state, dispatch] = useReducer(reducer, getInitialState());
@@ -149,6 +151,11 @@ const Tetris = () => {
                 break;
             case 40:
                 _movePlayerDown();
+                break;
+            case 82:
+                if (process.env.NODE_ENV !== 'production') {
+                    dispatch({ type: RESET_PLAYER });
+                }
                 break;
             default:
                 console.log('unknown key pressed', keyCode);

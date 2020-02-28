@@ -3,6 +3,7 @@ import {
     MOVE_PLAYER_LEFT,
     MOVE_PLAYER_RIGHT,
     PLAYER_BLOCKED,
+    RESET_PLAYER,
     ROTATE_PLAYER,
 } from '../actions';
 import { updateGameBoard, getTetromino } from '../utils';
@@ -51,6 +52,15 @@ export const reducer = (state, action) => {
             };
 
             return update;
+        }
+        case RESET_PLAYER: {
+            return {
+                ...state,
+                player: {
+                    ...state.player,
+                    y: 0,
+                },
+            };
         }
         case ROTATE_PLAYER: {
             return {
