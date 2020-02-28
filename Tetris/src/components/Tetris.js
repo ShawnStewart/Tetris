@@ -138,7 +138,7 @@ const Tetris = () => {
 
         switch (keyCode) {
             case 32:
-                console.log('player', player);
+                console.log('player', state.player);
                 break;
             case 37:
                 _movePlayerLeft();
