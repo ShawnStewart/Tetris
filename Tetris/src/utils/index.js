@@ -7,7 +7,7 @@ import {
 } from '../constants';
 import { TETROMINOS, TETROMINO_MAP } from '../constants/tetrominos';
 
-const _checkOutOfBounds = ({ i, j, x, y }) =>
+const _checkOutOfBounds = ({ i = 0, j = 0, x = 0, y = 0 }) =>
     j + x < 0 || j + x >= BOARD_WIDTH || i + y >= BOARD_HEIGHT;
 
 const _checkRowCompleted = (row) => !row.some((v) => v === 1);
@@ -18,21 +18,22 @@ export const clearCanvas = ({ canvas }) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 };
 
-export const checkForCollision = ({ gameBoard, shape, x, y }) => {
-    return shape.some((row, i) => {
-        if (i + y < 0) {
+export const checkForCollision = ({ gameBoard, shape, x, y }) =>
+    shape.some((row, i) => {
+        if (i + y < 0 && x >= 0 && x <= BOARD_WIDTH - shape.length) {
             return false;
         }
 
         return row.some((column, j) => {
-            if (_checkOutOfBounds({ i, j, x, y })) {
+            if (i + y < 0) {
+                return _checkOutOfBounds({ j, x }) ? !!column : false;
+            } else if (_checkOutOfBounds({ i, j, x, y })) {
                 return !!column;
             }
 
             return !!column && gameBoard[i + y][j + x] > 1;
         });
     });
-};
 
 export const drawToCanvas = ({ canvas, matrix: m, x = 0, y = 0 }) => {
     const ctx = canvas.getContext('2d');
