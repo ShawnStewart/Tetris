@@ -2,7 +2,9 @@ const dotenv = require('dotenv').config({ path: __dirname + '/.env' });
 const path = require('path');
 const webpack = require('webpack');
 
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const { NODE_ENV } = process.env;
 const isProd = NODE_ENV === 'production';
@@ -40,13 +42,11 @@ const webpackConfig = {
         new webpack.DefinePlugin({
             'process.env': JSON.stringify(dotenv.parsed),
         }),
+        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({ template: './Tetris/public/index.html' }),
     ],
     resolve: {
         extensions: ['.js'],
-    },
-    devServer: {
-        historyApiFallback: true,
     },
     optimization: {
         splitChunks: {
@@ -63,9 +63,9 @@ const webpackConfig = {
 
 if (!isProd) {
     webpackConfig.devtool = 'cheap-module-eval-source-map';
-    webpackConfig.output.pathinfo = true;
 } else if (isProd) {
-    webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
+    webpackConfig.optimization.minimize = true;
+    webpackConfig.optimization.minimizer = [new TerserPlugin()];
     webpackConfig.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
 }
 
