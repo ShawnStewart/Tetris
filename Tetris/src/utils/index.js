@@ -35,21 +35,47 @@ export const checkForCollision = ({ gameBoard, shape, x, y }) =>
         });
     });
 
-export const drawToCanvas = ({ canvas, matrix: m, x = 0, y = 0 }) => {
+export const drawToCanvas = ({
+    canvas,
+    fill = true,
+    matrix: m,
+    x = 0,
+    y = 0,
+}) => {
     const ctx = canvas.getContext('2d');
 
     for (let i = 0; i < m.length; i++) {
         for (let j = 0; j < m[0].length; j++) {
             const posX = (j + x) * BLOCK_SIZE;
             const posY = (i + y) * BLOCK_SIZE;
+            const colorCode = m[i][j];
 
-            // Draw square
-            ctx.fillStyle = COLOR_MAP[m[i][j]];
+            ctx.fillStyle = COLOR_MAP[colorCode];
+
+            // If fill === false, add 30% opacity
+            if (!fill && colorCode) {
+                ctx.fillStyle = `${ctx.fillStyle}48`;
+            }
+
             ctx.fillRect(posX + 1, posY + 1, BLOCK_SIZE, BLOCK_SIZE);
 
+            if (!fill) {
+                // If fill === false, draw a colored border
+                ctx.strokeStyle = COLOR_MAP[colorCode];
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(posX + 1.5, posY + 1.5);
+                ctx.lineTo(posX + 1.5, posY + BLOCK_SIZE - 0.5);
+                ctx.lineTo(posX + BLOCK_SIZE - 0.5, posY + BLOCK_SIZE - 0.5);
+                ctx.lineTo(posX + BLOCK_SIZE - 0.5, posY + 1.5);
+                ctx.lineTo(posX + 1.5, posY + 1.5);
+                ctx.stroke();
+            }
+
             // Draw square border
-            if (m[i][j]) {
+            if (colorCode) {
                 ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 1;
                 ctx.beginPath();
 
                 ctx.moveTo(posX + 0.5, posY + 0.5);
@@ -64,12 +90,27 @@ export const drawToCanvas = ({ canvas, matrix: m, x = 0, y = 0 }) => {
     }
 };
 
-export const getInitialState = () => ({
-    gameBoard: initializeBoard(),
-    player: getTetromino(),
-    tetrominoCount: QUEUE_LENGTH + 1,
-    queue: initializeQueue(),
-});
+export const getInitialState = () => {
+    const initialPlayer = getTetromino();
+
+    return {
+        gameBoard: initializeBoard(),
+        placeholder: BOARD_HEIGHT + initialPlayer.y,
+        player: initialPlayer,
+        tetrominoCount: QUEUE_LENGTH + 1,
+        queue: initializeQueue(),
+    };
+};
+
+export const getPlaceholder = ({ gameBoard, shape, x, y }) => {
+    let posY = y;
+
+    while (!checkForCollision({ gameBoard, shape, x, y: posY + 1 })) {
+        posY++;
+    }
+
+    return posY;
+};
 
 export const getTetromino = (index) => {
     if (isNaN(index) || index < 0 || index > TETROMINOS.length) {
