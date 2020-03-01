@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 
 import Canvas from './Canvas';
 import Queue from './Queue';
@@ -25,9 +25,11 @@ import {
 import './Tetris.scss';
 
 const Tetris = () => {
-    const selfRef = useRef();
-    const gameBoardRef = useRef();
     const [state, dispatch] = useReducer(reducer, getInitialState());
+    const gameBoardRef = useRef(null);
+    const lastTick = useRef(performance.now());
+    const selfRef = useRef(null);
+    const [frameCount, setFrameCount] = useState(0);
 
     useEffect(() => {
         selfRef.current.focus();
@@ -46,6 +48,23 @@ const Tetris = () => {
         drawToCanvas({ canvas, matrix: shape, x, y });
         drawToCanvas({ canvas, fill: false, matrix: shape, x, y: placeholder });
     }, [state.player]);
+
+    useEffect(() => {
+        const frameId = requestAnimationFrame(() => {
+            const now = performance.now();
+
+            if (now - 1000 >= lastTick.current) {
+                _movePlayerDown();
+
+                lastTick.current = now;
+            }
+
+            setFrameCount(frameCount + 1);
+        });
+        const cleanUp = () => cancelAnimationFrame(frameId);
+
+        return cleanUp;
+    }, [frameCount]);
 
     const _movePlayerLeft = () => {
         const { gameBoard, player } = state;
