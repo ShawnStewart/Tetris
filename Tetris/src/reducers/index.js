@@ -1,4 +1,5 @@
 import {
+    JUMP_TO_PLACEHOLDER,
     MOVE_PLAYER_DOWN,
     MOVE_PLAYER_LEFT,
     MOVE_PLAYER_RIGHT,
@@ -10,6 +11,41 @@ import { getPlaceholder, getTetromino, updateGameBoard } from '../utils';
 
 export const reducer = (state, action) => {
     switch (action.type) {
+        case JUMP_TO_PLACEHOLDER: {
+            const {
+                gameBoard,
+                placeholder,
+                player,
+                tetrominoCount,
+                queue,
+            } = state;
+            const addToQueue = {
+                ...getTetromino(),
+                tetrominoId: tetrominoCount,
+            };
+
+            const updatedGameBoard = updateGameBoard({
+                gameBoard,
+                ...player,
+                y: placeholder,
+            });
+            const updatedPlayer = queue[0];
+            const updatedPlaceholder = getPlaceholder({
+                gameBoard: updatedGameBoard,
+                ...updatedPlayer,
+            });
+            const updatedTetrominoCount = tetrominoCount + 1;
+            const updatedQueue = [...queue.slice(1), addToQueue];
+
+            return {
+                ...state,
+                gameBoard: updatedGameBoard,
+                placeholder: updatedPlaceholder,
+                player: updatedPlayer,
+                tetrominoCount: updatedTetrominoCount,
+                queue: updatedQueue,
+            };
+        }
         case MOVE_PLAYER_DOWN: {
             return {
                 ...state,
@@ -67,15 +103,14 @@ export const reducer = (state, action) => {
             const updatedTetrominoCount = tetrominoCount + 1;
             const updatedQueue = [...queue.slice(1), addToQueue];
 
-            const update = {
+            return {
+                ...state,
                 gameBoard: updatedGameBoard,
                 placeholder: updatedPlaceholder,
                 player: updatedPlayer,
                 tetrominoCount: updatedTetrominoCount,
                 queue: updatedQueue,
             };
-
-            return update;
         }
         case RESET_PLAYER: {
             return {

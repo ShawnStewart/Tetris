@@ -4,6 +4,7 @@ import Canvas from './Canvas';
 import Queue from './Queue';
 
 import {
+    JUMP_TO_PLACEHOLDER,
     MOVE_PLAYER_DOWN,
     MOVE_PLAYER_LEFT,
     MOVE_PLAYER_RIGHT,
@@ -121,7 +122,7 @@ const Tetris = () => {
 
         switch (keyCode) {
             case 32:
-                console.log('player', state.player);
+                dispatch({ type: JUMP_TO_PLACEHOLDER });
                 break;
             case 37:
                 _movePlayerLeft();

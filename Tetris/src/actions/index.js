@@ -1,3 +1,4 @@
+export const JUMP_TO_PLACEHOLDER = 'jumpToPlaceholder';
 export const MOVE_PLAYER_DOWN = 'movePlayerDown';
 export const MOVE_PLAYER_LEFT = 'movePlayerLeft';
 export const MOVE_PLAYER_RIGHT = 'movePlayerRight';
