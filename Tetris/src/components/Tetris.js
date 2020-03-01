@@ -36,12 +36,14 @@ const Tetris = () => {
         const canvas = gameBoardRef.current;
         const {
             gameBoard,
+            placeholder,
             player: { shape, x, y },
         } = state;
 
         clearCanvas({ canvas });
         drawToCanvas({ canvas, matrix: gameBoard });
         drawToCanvas({ canvas, matrix: shape, x, y });
+        drawToCanvas({ canvas, fill: false, matrix: shape, x, y: placeholder });
     }, [state.player]);
 
     const _movePlayerLeft = () => {
@@ -71,17 +73,12 @@ const Tetris = () => {
     };
 
     const _movePlayerDown = () => {
-        const { gameBoard, player, tetrominoCount, queue } = state;
-        const collision = checkForCollision({
-            gameBoard,
-            ...player,
-            y: player.y + 1,
-        });
+        const { placeholder, player } = state;
 
-        if (!collision) {
-            dispatch({ type: MOVE_PLAYER_DOWN });
-        } else {
+        if (player.y === placeholder) {
             dispatch({ type: PLAYER_BLOCKED });
+        } else {
+            dispatch({ type: MOVE_PLAYER_DOWN });
         }
     };
 

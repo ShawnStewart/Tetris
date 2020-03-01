@@ -6,7 +6,7 @@ import {
     RESET_PLAYER,
     ROTATE_PLAYER,
 } from '../actions';
-import { updateGameBoard, getTetromino } from '../utils';
+import { getPlaceholder, getTetromino, updateGameBoard } from '../utils';
 
 export const reducer = (state, action) => {
     switch (action.type) {
@@ -20,20 +20,34 @@ export const reducer = (state, action) => {
             };
         }
         case MOVE_PLAYER_LEFT: {
+            const { gameBoard, player } = state;
+
             return {
                 ...state,
+                placeholder: getPlaceholder({
+                    gameBoard,
+                    ...player,
+                    x: player.x - 1,
+                }),
                 player: {
-                    ...state.player,
-                    x: state.player.x - 1,
+                    ...player,
+                    x: player.x - 1,
                 },
             };
         }
         case MOVE_PLAYER_RIGHT: {
+            const { gameBoard, player } = state;
+
             return {
                 ...state,
+                placeholder: getPlaceholder({
+                    gameBoard,
+                    ...player,
+                    x: player.x + 1,
+                }),
                 player: {
-                    ...state.player,
-                    x: state.player.x + 1,
+                    ...player,
+                    x: player.x + 1,
                 },
             };
         }
@@ -44,11 +58,21 @@ export const reducer = (state, action) => {
                 tetrominoId: tetrominoCount,
             };
 
+            const updatedGameBoard = updateGameBoard({ gameBoard, ...player });
+            const updatedPlayer = queue[0];
+            const updatedPlaceholder = getPlaceholder({
+                gameBoard: updatedGameBoard,
+                ...updatedPlayer,
+            });
+            const updatedTetrominoCount = tetrominoCount + 1;
+            const updatedQueue = [...queue.slice(1), addToQueue];
+
             const update = {
-                gameBoard: updateGameBoard({ gameBoard, ...player }),
-                player: queue[0],
-                tetrominoCount: tetrominoCount + 1,
-                queue: [...queue.slice(1), addToQueue],
+                gameBoard: updatedGameBoard,
+                placeholder: updatedPlaceholder,
+                player: updatedPlayer,
+                tetrominoCount: updatedTetrominoCount,
+                queue: updatedQueue,
             };
 
             return update;
@@ -63,12 +87,13 @@ export const reducer = (state, action) => {
             };
         }
         case ROTATE_PLAYER: {
+            const { gameBoard, player } = state;
+            const updatedPlayer = { ...player, ...action.payload };
+
             return {
                 ...state,
-                player: {
-                    ...state.player,
-                    ...action.payload,
-                },
+                placeholder: getPlaceholder({ gameBoard, ...updatedPlayer }),
+                player: { ...updatedPlayer },
             };
         }
         default: {
