@@ -16,13 +16,7 @@ const Canvas = ({ id, matrix, height: h, width: w, forwardRef }) => {
     }, [matrix]);
 
     return (
-        <canvas
-            ref={canvasRef}
-            id={id}
-            className="ssd-canvas"
-            height={h * BLOCK_SIZE + 1}
-            width={w * BLOCK_SIZE + 1}
-        />
+        <canvas ref={canvasRef} id={id} className="ssd-canvas" height={h * BLOCK_SIZE + 1} width={w * BLOCK_SIZE + 1} />
     );
 };
 

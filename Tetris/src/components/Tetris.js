@@ -14,13 +14,7 @@ import {
 } from '../actions';
 import { BOARD_HEIGHT, BOARD_WIDTH } from '../constants';
 import { reducer } from '../reducers';
-import {
-    checkForCollision,
-    clearCanvas,
-    drawToCanvas,
-    getInitialState,
-    rotateMatrix,
-} from '../utils';
+import { checkForCollision, clearCanvas, drawToCanvas, getInitialState, rotateMatrix } from '../utils';
 
 import './Tetris.scss';
 
@@ -167,13 +161,7 @@ const Tetris = () => {
     };
 
     return (
-        <div
-            id="tetris"
-            className="section"
-            tabIndex="0"
-            onKeyDown={_handleOnKeyDown}
-            ref={selfRef}
-        >
+        <div id="tetris" className="section" tabIndex="0" onKeyDown={_handleOnKeyDown} ref={selfRef}>
             <div className="container display-flex align-center">
                 <Canvas
                     id="tetris-game-board"

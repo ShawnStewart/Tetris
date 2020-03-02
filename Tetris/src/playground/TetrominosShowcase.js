@@ -7,10 +7,7 @@ import { TETROMINOS, TETROMINO_MAP } from '../constants';
 import { rotateMatrix } from '../utils';
 
 const getInitialMatrices = () =>
-    TETROMINOS.reduce(
-        (acc, cur) => ({ ...acc, [cur]: TETROMINO_MAP[cur].getShape() }),
-        {},
-    );
+    TETROMINOS.reduce((acc, cur) => ({ ...acc, [cur]: TETROMINO_MAP[cur].getShape() }), {});
 
 const TetrominosShowcase = () => {
     const [matrices, setMatrices] = useState(getInitialMatrices);
@@ -43,9 +40,7 @@ const TetrominosShowcase = () => {
 
     return (
         <div id="tetrominos-showcase" className="section--sm">
-            <div className="container align-center flex-column">
-                {tetrominos}
-            </div>
+            <div className="container align-center flex-column">{tetrominos}</div>
         </div>
     );
 };

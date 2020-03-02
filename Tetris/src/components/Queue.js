@@ -14,10 +14,7 @@ const Queue = ({ matrices }) => {
     ));
 
     return (
-        <div
-            id="tetris-queue"
-            className="display-flex flex-column align-center"
-        >
+        <div id="tetris-queue" className="display-flex flex-column align-center">
             {queue}
         </div>
     );

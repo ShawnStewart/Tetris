@@ -7,22 +7,12 @@ import {
     RESET_PLAYER,
     ROTATE_PLAYER,
 } from '../actions';
-import {
-    getPlaceholder,
-    updateGameBoard,
-    updatePlayerFromQueue,
-} from '../utils';
+import { getPlaceholder, updateGameBoard, updatePlayerFromQueue } from '../utils';
 
 export const reducer = (state, action) => {
     switch (action.type) {
         case JUMP_TO_PLACEHOLDER: {
-            const {
-                gameBoard,
-                placeholder,
-                player,
-                tetrominoCount,
-                queue,
-            } = state;
+            const { gameBoard, placeholder, player, tetrominoCount, queue } = state;
 
             const { updatedPlayer, updatedQueue } = updatePlayerFromQueue({
                 tetrominoCount,

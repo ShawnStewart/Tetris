@@ -1,10 +1,4 @@
-import {
-    BLOCK_SIZE,
-    BOARD_HEIGHT,
-    BOARD_WIDTH,
-    COLOR_MAP,
-    QUEUE_LENGTH,
-} from '../constants';
+import { BLOCK_SIZE, BOARD_HEIGHT, BOARD_WIDTH, COLOR_MAP, QUEUE_LENGTH } from '../constants';
 import { TETROMINOS, TETROMINO_MAP } from '../constants/tetrominos';
 
 const _checkOutOfBounds = ({ i = 0, j = 0, x = 0, y = 0 }) =>
@@ -35,13 +29,7 @@ export const checkForCollision = ({ gameBoard, shape, x, y }) =>
         });
     });
 
-export const drawToCanvas = ({
-    canvas,
-    fill = true,
-    matrix: m,
-    x = 0,
-    y = 0,
-}) => {
+export const drawToCanvas = ({ canvas, fill = true, matrix: m, x = 0, y = 0 }) => {
     const ctx = canvas.getContext('2d');
 
     for (let i = 0; i < m.length; i++) {
@@ -177,10 +165,7 @@ export const updateGameBoard = ({ gameBoard, shape, x, y }) => {
     });
 
     shape.forEach((row, i) => {
-        if (
-            !_checkOutOfBounds({ i, j: 0, x: 0, y }) &&
-            _checkRowCompleted(result[i + y])
-        ) {
+        if (!_checkOutOfBounds({ i, j: 0, x: 0, y }) && _checkRowCompleted(result[i + y])) {
             result.splice(i + y, 1);
             result.unshift(new Array(BOARD_WIDTH).fill(1));
         }
