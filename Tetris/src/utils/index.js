@@ -188,3 +188,11 @@ export const updateGameBoard = ({ gameBoard, shape, x, y }) => {
 
     return result;
 };
+
+export const updatePlayerFromQueue = ({ tetrominoCount, queue }) => {
+    const updatedPlayer = queue[0];
+    const addToQueue = { ...getTetromino(), tetrominoId: tetrominoCount };
+    const updatedQueue = [...queue.slice(1), addToQueue];
+
+    return { updatedPlayer, updatedQueue };
+};

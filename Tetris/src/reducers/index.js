@@ -7,7 +7,11 @@ import {
     RESET_PLAYER,
     ROTATE_PLAYER,
 } from '../actions';
-import { getPlaceholder, getTetromino, updateGameBoard } from '../utils';
+import {
+    getPlaceholder,
+    updateGameBoard,
+    updatePlayerFromQueue,
+} from '../utils';
 
 export const reducer = (state, action) => {
     switch (action.type) {
@@ -19,23 +23,21 @@ export const reducer = (state, action) => {
                 tetrominoCount,
                 queue,
             } = state;
-            const addToQueue = {
-                ...getTetromino(),
-                tetrominoId: tetrominoCount,
-            };
 
+            const { updatedPlayer, updatedQueue } = updatePlayerFromQueue({
+                tetrominoCount,
+                queue,
+            });
             const updatedGameBoard = updateGameBoard({
                 gameBoard,
                 ...player,
                 y: placeholder,
             });
-            const updatedPlayer = queue[0];
             const updatedPlaceholder = getPlaceholder({
                 gameBoard: updatedGameBoard,
                 ...updatedPlayer,
             });
             const updatedTetrominoCount = tetrominoCount + 1;
-            const updatedQueue = [...queue.slice(1), addToQueue];
 
             return {
                 ...state,
@@ -89,19 +91,17 @@ export const reducer = (state, action) => {
         }
         case PLAYER_BLOCKED: {
             const { gameBoard, player, tetrominoCount, queue } = state;
-            const addToQueue = {
-                ...getTetromino(),
-                tetrominoId: tetrominoCount,
-            };
 
+            const { updatedPlayer, updatedQueue } = updatePlayerFromQueue({
+                tetrominoCount,
+                queue,
+            });
             const updatedGameBoard = updateGameBoard({ gameBoard, ...player });
-            const updatedPlayer = queue[0];
             const updatedPlaceholder = getPlaceholder({
                 gameBoard: updatedGameBoard,
                 ...updatedPlayer,
             });
             const updatedTetrominoCount = tetrominoCount + 1;
-            const updatedQueue = [...queue.slice(1), addToQueue];
 
             return {
                 ...state,
