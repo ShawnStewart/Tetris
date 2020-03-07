@@ -23,6 +23,7 @@ const Tetris = () => {
     const gameBoardRef = useRef(null);
     const lastTick = useRef(performance.now());
     const selfRef = useRef(null);
+    const [fps, setFps] = useState(0);
     const [frameCount, setFrameCount] = useState(0);
 
     useEffect(() => {
@@ -51,9 +52,11 @@ const Tetris = () => {
                 _movePlayerDown();
 
                 lastTick.current = now;
+                setFps(frameCount);
+                setFrameCount(0);
+            } else {
+                setFrameCount(frameCount + 1);
             }
-
-            setFrameCount(frameCount + 1);
         });
         const cleanUp = () => cancelAnimationFrame(frameId);
 
